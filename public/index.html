@@ -3,20 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Poe AI Wrapper</title>
+  <title>PocketAI Companion</title>
+  <meta name="description" content="Your mobile-first AI companion for quick, intuitive interactions">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>🤖 Poe AI Wrapper</h1>
-      <p>Free AI Chat Interface</p>
+      <div class="header-content">
+        <h1>✨ PocketAI</h1>
+        <p>Your AI Companion</p>
+      </div>
     </header>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions" id="quickActions">
+      <button class="quick-btn" data-prompt="Summarize this for me:">📝 Summarize</button>
+      <button class="quick-btn" data-prompt="Translate to English:">🌐 Translate</button>
+      <button class="quick-btn" data-prompt="Explain this simply:">💡 Explain</button>
+      <button class="quick-btn" data-prompt="Rewrite this better:">✍️ Rewrite</button>
+    </div>
 
     <div class="chat-container" id="chatContainer">
       <div class="message bot">
+        <div class="avatar">🤖</div>
         <div class="message-content">
-          <strong>AI:</strong> Hello! I'm your AI assistant. How can I help you today?
+          <div class="message-text">
+            Hey! I'm PocketAI, your mobile companion. Ask me anything or use quick actions above!
+          </div>
         </div>
       </div>
     </div>
@@ -28,7 +42,11 @@
         placeholder="Type your message..." 
         autocomplete="off"
       >
-      <button id="sendBtn">Send</button>
+      <button id="sendBtn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+        </svg>
+      </button>
     </div>
   </div>
 

@@ -1,405 +1,556 @@
-# 🤖 Poe AI Wrapper
+# PocketAI Companion
 
-> A clean, simple frontend wrapper for AI chat interfaces. Perfect starting point for building your own AI-powered applications.
+Mobile-first AI companion prototype. Built for fast, clean, intuitive chat UX on web and mobile.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen)](https://nodejs.org/)
+> Positioning: not "another chatbot demo".
+> This repo shows product taste, lightweight frontend execution, and AI integration readiness.
 
-## 🌟 Features
+## Why this project matters
 
-- ✨ Clean, modern chat interface
-- 🚀 Lightweight Express.js backend
-- 📱 Fully responsive design
-- 🎨 Easy to customize
-- 🔌 Ready for AI API integration
-- 🛠️ Simple architecture for learning
+Most AI demos stop at "send prompt → get answer".
+This project pushes one layer higher:
+- mobile-first interface
+- quick action UX
+- clean assistant feel
+- easy AI provider swap
+- portfolio-ready structure
 
-## 📸 Preview
+If you want repo that feels closer to future consumer AI products, this is stronger than raw API snippets.
 
-The app provides a clean chat interface where users can interact with AI models. Currently in demo mode with echo responses.
+## Core idea
 
-## 🚀 Quick Start
+PocketAI Companion is lightweight AI assistant interface designed for:
+- mobile users
+- fast chat interactions
+- easy AI integration
+- product prototype demos
+- portfolio/showcase use
 
-### Prerequisites
-
-- Node.js (v14 or higher)
-- npm or yarn
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Anzcrypto/poe-ai-wrapper.git
-   cd poe-ai-wrapper
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Start the server**
-   ```bash
-   npm start
-   ```
-
-4. **Open your browser**
-   ```
-   http://localhost:3000
-   ```
-
-That's it! You should see the chat interface.
-
-## 📁 Project Structure
-
-```
-poe-ai-wrapper/
-├── public/              # Frontend files
-│   ├── index.html      # Main HTML structure
-│   ├── style.css       # Styling and layout
-│   └── app.js          # Client-side JavaScript
-├── server.js           # Express backend server
-├── package.json        # Dependencies and scripts
-├── README.md           # This file
-└── .gitignore         # Git ignore rules
-```
-
-## 🔧 How It Works
-
-### Architecture Overview
-
-```
-User Input → Frontend (app.js) → POST /api/chat → Backend (server.js) → Response → UI Update
-```
-
-### Frontend Flow
-
-1. User types a message in the input field
-2. `app.js` captures the input and sends POST request to `/api/chat`
-3. Shows "Thinking..." indicator while waiting
-4. Receives response and displays it in the chat
-
-### Backend Flow
-
-1. Express server receives POST request at `/api/chat`
-2. Extracts the message from request body
-3. Processes the message (currently echo mode)
-4. Returns JSON response with reply
-
-### API Endpoint
-
-**POST** `/api/chat`
-
-**Request Body:**
-```json
-{
-  "message": "Hello, AI!"
-}
-```
-
-**Response:**
-```json
-{
-  "reply": "Echo AI: Hello, AI!",
-  "model": "demo-model"
-}
-```
-
-## 🎨 Customization
-
-### Change Colors
-
-Edit `public/style.css`:
-
-```css
-/* Primary color (header, buttons) */
-background-color: #4CAF50;  /* Change this */
-
-/* User message bubble */
-background-color: #e1ffc7;  /* Change this */
-
-/* Bot message bubble */
-background-color: #f0f0f0;  /* Change this */
-```
-
-### Change Port
-
-Edit `server.js`:
-
-```javascript
-const PORT = process.env.PORT || 3000;  // Change 3000 to your port
-```
-
-Or set environment variable:
-```bash
-PORT=8080 npm start
-```
-
-### Modify UI Text
-
-Edit `public/index.html`:
-
-```html
-<h1>🤖 Poe AI Wrapper</h1>  <!-- Change title -->
-<p>Free AI Chat Interface</p>  <!-- Change subtitle -->
-```
-
-## 🔌 Integrating Real AI
-
-Currently, the app is in **demo mode** (echo responses). Here's how to connect real AI:
-
-### Option 1: OpenAI API
-
-1. Install OpenAI SDK:
-   ```bash
-   npm install openai
-   ```
-
-2. Update `server.js`:
-   ```javascript
-   const OpenAI = require('openai');
-   const openai = new OpenAI({
-     apiKey: process.env.OPENAI_API_KEY
-   });
-
-   app.post('/api/chat', async (req, res) => {
-     const { message } = req.body;
-     
-     try {
-       const completion = await openai.chat.completions.create({
-         model: "gpt-3.5-turbo",
-         messages: [{ role: "user", content: message }]
-       });
-       
-       return res.json({
-         reply: completion.choices[0].message.content,
-         model: "gpt-3.5-turbo"
-       });
-     } catch (error) {
-       return res.status(500).json({ error: error.message });
-     }
-   });
-   ```
-
-3. Set your API key:
-   ```bash
-   export OPENAI_API_KEY="your-api-key-here"
-   npm start
-   ```
-
-### Option 2: OpenRouter (Multiple Models)
-
-1. Install axios:
-   ```bash
-   npm install axios
-   ```
-
-2. Update `server.js`:
-   ```javascript
-   const axios = require('axios');
-
-   app.post('/api/chat', async (req, res) => {
-     const { message } = req.body;
-     
-     try {
-       const response = await axios.post(
-         'https://openrouter.ai/api/v1/chat/completions',
-         {
-           model: "meta-llama/llama-3.1-8b-instruct:free",
-           messages: [{ role: "user", content: message }]
-         },
-         {
-           headers: {
-             'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-             'Content-Type': 'application/json'
-           }
-         }
-       );
-       
-       return res.json({
-         reply: response.data.choices[0].message.content,
-         model: "llama-3.1-8b"
-       });
-     } catch (error) {
-       return res.status(500).json({ error: error.message });
-     }
-   });
-   ```
-
-### Option 3: Local Models (Ollama)
-
-1. Install Ollama from https://ollama.ai
-2. Pull a model: `ollama pull llama2`
-3. Update `server.js`:
-   ```javascript
-   const axios = require('axios');
-
-   app.post('/api/chat', async (req, res) => {
-     const { message } = req.body;
-     
-     try {
-       const response = await axios.post('http://localhost:11434/api/generate', {
-         model: "llama2",
-         prompt: message,
-         stream: false
-       });
-       
-       return res.json({
-         reply: response.data.response,
-         model: "llama2-local"
-       });
-     } catch (error) {
-       return res.status(500).json({ error: error.message });
-     }
-   });
-   ```
-
-## 🚢 Deployment
-
-### Deploy to Vercel
-
-1. Install Vercel CLI:
-   ```bash
-   npm install -g vercel
-   ```
-
-2. Deploy:
-   ```bash
-   vercel
-   ```
-
-### Deploy to Railway
-
-1. Create account at https://railway.app
-2. Connect your GitHub repo
-3. Railway auto-detects Node.js and deploys
-
-### Deploy to Heroku
-
-1. Install Heroku CLI
-2. Create app:
-   ```bash
-   heroku create your-app-name
-   ```
-
-3. Deploy:
-   ```bash
-   git push heroku main
-   ```
-
-## 🛠️ Development
-
-### Available Scripts
-
-```bash
-npm start       # Start the server
-npm run dev     # Start with nodemon (auto-reload)
-```
-
-### Adding Auto-Reload (Development)
-
-1. Install nodemon:
-   ```bash
-   npm install --save-dev nodemon
-   ```
-
-2. Update `package.json`:
-   ```json
-   "scripts": {
-     "start": "node server.js",
-     "dev": "nodemon server.js"
-   }
-   ```
-
-3. Run with auto-reload:
-   ```bash
-   npm run dev
-   ```
-
-## 📚 Learning Resources
-
-### Understanding the Code
-
-**Frontend (app.js):**
-- Event listeners for user input
-- Fetch API for HTTP requests
-- DOM manipulation for UI updates
-
-**Backend (server.js):**
-- Express.js routing
-- JSON parsing middleware
-- Static file serving
-
-### Next Steps for Learning
-
-1. **Add chat history** - Store messages in array
-2. **Add user authentication** - Use JWT or sessions
-3. **Add database** - Store conversations (MongoDB, PostgreSQL)
-4. **Add file upload** - Handle images/documents
-5. **Add streaming responses** - Real-time AI output
-6. **Add markdown rendering** - Format AI responses
-
-## 🤝 Contributing
-
-Contributions are welcome! Here's how:
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🐛 Troubleshooting
-
-### Port already in use
-```bash
-# Kill process on port 3000
-lsof -ti:3000 | xargs kill -9
-
-# Or use different port
-PORT=8080 npm start
-```
-
-### Cannot find module 'express'
-```bash
-# Reinstall dependencies
-rm -rf node_modules package-lock.json
-npm install
-```
-
-### CORS errors when deploying
-Add CORS middleware in `server.js`:
-```javascript
-const cors = require('cors');
-app.use(cors());
-```
-
-## 💡 Ideas for Enhancement
-
-- [ ] Add chat history persistence
-- [ ] Add multiple AI model selection
-- [ ] Add user authentication
-- [ ] Add conversation export (JSON/PDF)
-- [ ] Add voice input/output
-- [ ] Add image generation support
-- [ ] Add code syntax highlighting
-- [ ] Add dark mode toggle
-- [ ] Add typing indicators
-- [ ] Add message reactions
-
-## 📞 Support
-
-- Create an issue: [GitHub Issues](https://github.com/Anzcrypto/poe-ai-wrapper/issues)
-- Twitter: [@Andika669](https://twitter.com/Andika669)
-
-## ⭐ Show Your Support
-
-Give a ⭐️ if this project helped you!
+Current mode:
+- works in **demo mode** without API key
+- supports **real AI** with OpenRouter when API key is added
 
 ---
 
-**Built with ❤️ by [Wowok](https://github.com/Anzcrypto)**
+## Features
+
+### Product / UX
+- mobile-first layout
+- polished assistant UI
+- quick action chips
+- responsive chat experience
+- clean message bubbles
+- lightweight design
+
+### Engineering
+- Express backend
+- simple REST endpoint
+- OpenRouter integration ready
+- demo fallback mode
+- easy local run
+- easy deploy path
+
+### Quick actions included
+- Summarize
+- Translate
+- Explain
+- Rewrite
+
+---
+
+## Screens / flow
+
+User flow:
+1. open app
+2. tap quick action or type message
+3. frontend sends prompt to backend
+4. backend returns demo reply or real AI response
+5. UI renders assistant answer in chat thread
+
+Architecture:
+
+```text
+User
+  ↓
+public/index.html
+  ↓
+public/app.js
+  ↓
+POST /api/chat
+  ↓
+server.js
+  ↓
+OpenRouter API (optional)
+  ↓
+Response back to UI
+```
+
+---
+
+## Tech stack
+
+- Node.js
+- Express
+- Vanilla HTML/CSS/JS
+- Axios
+- OpenRouter API (optional)
+
+Why this stack:
+- fast to understand
+- fast to modify
+- low complexity
+- ideal for prototype-to-product flow
+
+---
+
+## Project structure
+
+```text
+poe-ai-wrapper/
+├── public/
+│   ├── index.html       # main UI
+│   ├── style.css        # mobile-first styling
+│   └── app.js           # frontend chat logic
+├── server.js            # backend API + AI provider bridge
+├── package.json         # scripts + deps
+├── package-lock.json
+├── .env.example         # env template
+├── .gitignore
+└── README.md
+```
+
+---
+
+## Local setup
+
+### 1. Clone repo
+```bash
+git clone https://github.com/Anzcrypto/poe-ai-wrapper.git
+cd poe-ai-wrapper
+```
+
+### 2. Install deps
+```bash
+npm install
+```
+
+### 3. Run app
+```bash
+npm start
+```
+
+### 4. Open browser
+```text
+http://localhost:3000
+```
+
+---
+
+## Demo mode vs real AI mode
+
+### Demo mode
+If you run app without API key, backend returns fallback response.
+Useful for:
+- UI testing
+- frontend demo
+- deployment smoke test
+- product presentation without paid setup
+
+Example response:
+```json
+{
+  "reply": "Echo (demo mode): hello",
+  "model": "demo-mode"
+}
+```
+
+### Real AI mode
+If you add `OPENROUTER_API_KEY`, backend sends prompt to OpenRouter.
+
+---
+
+## OpenRouter setup
+
+OpenRouter gives access to multiple AI models, including some free options.
+
+### 1. Create API key
+Get key here:
+- https://openrouter.ai/keys
+
+### 2. Create env file
+```bash
+cp .env.example .env
+```
+
+### 3. Edit `.env`
+```env
+OPENROUTER_API_KEY=your_openrouter_api_key_here
+PORT=3000
+```
+
+### 4. Run app with env
+If shell supports inline env loading:
+```bash
+export OPENROUTER_API_KEY=your_openrouter_api_key_here
+npm start
+```
+
+Or if using `.env`, load it with your preferred env loader.
+
+> Note: current server reads `process.env.OPENROUTER_API_KEY` directly.
+> If you want automatic `.env` loading, add `dotenv` package.
+
+---
+
+## API behavior
+
+### Endpoint
+```http
+POST /api/chat
+```
+
+### Request body
+```json
+{
+  "message": "Explain quantum computing simply"
+}
+```
+
+### Demo mode response
+```json
+{
+  "reply": "Echo (demo mode): Explain quantum computing simply",
+  "model": "demo-mode"
+}
+```
+
+### Real AI mode response
+```json
+{
+  "reply": "Quantum computing uses quantum bits...",
+  "model": "meta-llama/llama-3.1-8b-instruct:free"
+}
+```
+
+---
+
+## UI guide
+
+### Header
+Current branding:
+- PocketAI
+- tagline: Your AI Companion
+
+### Quick actions
+Buttons prefill common prompt patterns:
+- summarize
+- translate
+- explain
+- rewrite
+
+This improves product feel because user does not start from blank state.
+
+### Chat area
+- bot messages left
+- user messages right
+- rounded mobile-friendly bubble style
+- scrollable thread
+
+### Input area
+- simple text field
+- send button
+- mobile touch-friendly sizing
+
+---
+
+## How to customize
+
+## 1. Change branding
+Edit `public/index.html`:
+```html
+<h1>✨ PocketAI</h1>
+<p>Your AI Companion</p>
+```
+
+You can rename it into:
+- Mimo-style Assistant
+- LiteAI Companion
+- Pocket Copilot
+- Mobile AI Buddy
+
+## 2. Change colors
+Edit `public/style.css`.
+Search these gradients:
+```css
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+```
+
+Good alt palettes:
+- cyan → blue
+- black → gray
+- orange → pink
+- green → teal
+
+## 3. Change quick actions
+Edit buttons in `public/index.html`:
+```html
+<button class="quick-btn" data-prompt="Summarize this for me:">📝 Summarize</button>
+```
+
+Good replacements:
+- Brainstorm ideas
+- Fix grammar
+- Write caption
+- Explain code
+- Translate to Indonesian
+- Turn into tweet thread
+
+## 4. Change model
+Edit `server.js`:
+```js
+const DEFAULT_MODEL = 'meta-llama/llama-3.1-8b-instruct:free';
+```
+
+Swap with another OpenRouter model if needed.
+
+---
+
+## How to make this more relevant to Xiaomi / Mimo vibe
+
+If your angle is mobile AI companion / consumer AI product exploration, this repo is stronger when framed like this:
+
+### Better positioning
+Instead of:
+- "Poe wrapper"
+- "simple AI frontend"
+- "chat demo"
+
+Use:
+- mobile-first AI companion prototype
+- lightweight assistant interface
+- consumer AI UX experiment
+- minimal AI companion frontend
+
+### Why this matters
+Consumer AI products win on:
+- speed
+- clarity
+- low friction
+- mobile usability
+- product feel
+
+This repo can showcase all five if polished further.
+
+---
+
+## Suggested roadmap
+
+### Phase 1 — already done
+- clean UI
+- quick prompts
+- backend API
+- AI provider hook
+- demo fallback mode
+
+### Phase 2 — strong upgrade
+- model selector
+- dark mode toggle
+- copy response button
+- prompt history
+- markdown rendering
+- error states
+
+### Phase 3 — product mode
+- saved chat history
+- persona modes
+- auth
+- cloud deploy
+- streaming responses
+- voice input
+
+### Phase 4 — standout portfolio build
+- Android-style shell UI
+- PWA install support
+- multi-agent mode
+- image/file input
+- contextual memory
+
+---
+
+## Real next-step upgrades
+
+### Upgrade 1 — dark mode
+Why:
+- instant premium feel
+- better mobile UX
+
+### Upgrade 2 — model selector
+Why:
+- feels like real AI product
+- shows flexibility
+
+### Upgrade 3 — markdown/code rendering
+Why:
+- much better for coding/explainer use cases
+
+### Upgrade 4 — chat memory
+Why:
+- makes assistant feel persistent
+
+### Upgrade 5 — deploy live
+Why:
+- public URL > local screenshot
+
+---
+
+## Deployment guide
+
+## Deploy on Railway
+1. push repo to GitHub
+2. create project on Railway
+3. connect repo
+4. set env var:
+```env
+OPENROUTER_API_KEY=your_key_here
+```
+5. deploy
+
+## Deploy on Render
+1. create new Web Service
+2. connect GitHub repo
+3. build command:
+```bash
+npm install
+```
+4. start command:
+```bash
+npm start
+```
+5. add env var:
+```env
+OPENROUTER_API_KEY=your_key_here
+```
+
+## Deploy on VPS
+```bash
+git clone https://github.com/Anzcrypto/poe-ai-wrapper.git
+cd poe-ai-wrapper
+npm install
+npm start
+```
+
+For production, use PM2:
+```bash
+npm install -g pm2
+pm2 start server.js --name pocketai
+pm2 save
+```
+
+---
+
+## Add dotenv support
+If you want `.env` auto-loaded:
+
+### Install
+```bash
+npm install dotenv
+```
+
+### Add to `server.js`
+At top:
+```js
+require('dotenv').config();
+```
+
+Then `.env` works directly with:
+```bash
+npm start
+```
+
+---
+
+## Troubleshooting
+
+## App starts but replies only echo
+Cause:
+- no `OPENROUTER_API_KEY`
+- invalid API key
+- OpenRouter request failed
+
+Fix:
+- check env var exists
+- test key manually
+- inspect terminal logs
+
+## Port already used
+Run:
+```bash
+lsof -ti:3000 | xargs kill -9
+```
+
+Or choose another port:
+```bash
+PORT=8080 npm start
+```
+
+## OpenRouter errors
+Check:
+- key valid
+- model valid
+- internet access available
+- headers sent properly
+
+## Frontend not updating
+Check browser console and terminal logs.
+
+---
+
+## Why this is good for portfolio
+
+This repo shows more than code that runs.
+It shows:
+- interface decisions
+- product framing
+- AI integration readiness
+- mobile-first thinking
+- practical execution speed
+
+That is much stronger than generic boilerplate.
+
+---
+
+## Example pitch for this repo
+
+Use this if you want to post it on X, Discord, Telegram, or GitHub description:
+
+> Built PocketAI Companion — lightweight mobile-first AI assistant prototype with quick prompts, polished chat UX, and OpenRouter-ready backend. Designed as product-style AI interface, not just API demo.
+
+Short version:
+
+> Mobile-first AI companion prototype. Clean UX, fast setup, real AI ready.
+
+---
+
+## Future ideas
+
+- voice assistant mode
+- translation-first mode
+- student tutor mode
+- creator mode
+- crypto copilot mode
+- Android webview packaging
+- offline cache shell
+
+---
+
+## Credits
+
+Built by Wowok / Anzcrypto.
+
+If this repo helps, drop star.
+
+---
+
+## License
+
+MIT
