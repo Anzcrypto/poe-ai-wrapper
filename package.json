@@ -1,0 +1,16 @@
+{
+  "name": "poe-ai-wrapper",
+  "version": "1.0.0",
+  "description": "Simple frontend wrapper for free AI models",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["ai", "chat", "wrapper", "poe", "frontend"],
+  "author": "Wowok",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
