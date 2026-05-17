@@ -394,7 +394,6 @@ app.use(cors());
 ## 📞 Support
 
 - Create an issue: [GitHub Issues](https://github.com/Anzcrypto/poe-ai-wrapper/issues)
-- Twitter: [@Andika669](https://twitter.com/Andika669)
 
 ## ⭐ Show Your Support
 
@@ -402,4 +401,4 @@ Give a ⭐️ if this project helped you!
 
 ---
 
-**Built with ❤️ by [Wowok](https://github.com/Anzcrypto)**
+**Built with ❤️ by [Anzcrypto](https://github.com/Anzcrypto)**
