@@ -405,37 +405,84 @@ Why:
 
 ## Deployment guide
 
-## Deploy on Railway
-1. push repo to GitHub
-2. create project on Railway
-3. connect repo
-4. set env var:
-```env
-OPENROUTER_API_KEY=your_key_here
-```
-5. deploy
+### Deploy on Vercel (Recommended - No Credit Card Required)
 
-## Deploy on Render
-1. create new Web Service
-2. connect GitHub repo
-3. build command:
-```bash
-npm install
-```
-4. start command:
-```bash
-npm start
-```
-5. add env var:
-```env
-OPENROUTER_API_KEY=your_key_here
-```
+Vercel is the easiest way to deploy this app for free without a credit card.
 
-## Deploy on VPS
+#### Step 1: Push to GitHub
+Make sure your code is on GitHub.
+
+#### Step 2: Import to Vercel
+1. Go to https://vercel.com/new
+2. Sign in with GitHub
+3. Click **Import Project**
+4. Select your repository: `Anzcrypto/poe-ai-wrapper`
+
+#### Step 3: Configure Environment Variables
+In the Vercel import screen:
+1. Scroll to **Environment Variables**
+2. Add:
+   - **Name:** `OPENROUTER_API_KEY`
+   - **Value:** your OpenRouter API key
+3. Apply to: **Production** (default)
+
+#### Step 4: Deploy
+1. Click **Deploy**
+2. Wait ~1-2 minutes
+3. You'll get a live URL like: `https://your-project.vercel.app`
+
+#### Step 5: Test
+Open your Vercel URL and try chatting.
+
+**Note:** This repo includes `vercel.json` and `api/chat.js` for serverless deployment. Vercel automatically detects and uses them.
+
+---
+
+### Deploy on Railway (Requires Credit Card)
+
+1. Push repo to GitHub
+2. Create project on Railway: https://railway.app
+3. Connect your GitHub repo
+4. Set environment variable:
+   ```env
+   OPENROUTER_API_KEY=your_key_here
+   ```
+5. Deploy
+
+**Note:** Railway requires credit card verification even for free tier.
+
+---
+
+### Deploy on Render (Requires Credit Card)
+
+1. Create new Web Service: https://render.com
+2. Connect GitHub repo
+3. Build command:
+   ```bash
+   npm install
+   ```
+4. Start command:
+   ```bash
+   npm start
+   ```
+5. Add environment variable:
+   ```env
+   OPENROUTER_API_KEY=your_key_here
+   ```
+
+**Note:** Render also requires credit card for verification.
+
+---
+
+### Deploy on VPS (Self-hosted)
+
+If you have your own server:
+
 ```bash
 git clone https://github.com/Anzcrypto/poe-ai-wrapper.git
 cd poe-ai-wrapper
 npm install
+export OPENROUTER_API_KEY=your_key_here
 npm start
 ```
 
@@ -444,7 +491,21 @@ For production, use PM2:
 npm install -g pm2
 pm2 start server.js --name pocketai
 pm2 save
+pm2 startup
 ```
+
+---
+
+### Vercel vs Railway vs Render
+
+| Platform | Free Tier | Credit Card | Serverless | Best For |
+|----------|-----------|-------------|------------|----------|
+| **Vercel** | ✅ Yes | ❌ Not required | ✅ Yes | Quick demos, portfolios |
+| **Railway** | ✅ Yes ($5 credit) | ⚠️ Required | ❌ No | Persistent apps |
+| **Render** | ✅ Yes | ⚠️ Required | ❌ No | Simple deploys |
+| **VPS** | 💰 Paid | ✅ Yes | ❌ No | Full control |
+
+**Recommendation:** Use Vercel for fastest, no-CC deployment.
 
 ---
 
