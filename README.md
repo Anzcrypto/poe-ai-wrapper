@@ -28,7 +28,8 @@ PocketAI Companion is lightweight AI assistant interface designed for:
 
 Current mode:
 - works in **demo mode** without API key
-- supports **real AI** with OpenRouter when API key is added
+- supports **real AI** with Groq when API key is added
+- can be positioned as **MiMo-style mobile AI companion demo** for showcase and evaluation
 
 ---
 
@@ -45,7 +46,8 @@ Current mode:
 ### Engineering
 - Express backend
 - simple REST endpoint
-- OpenRouter integration ready
+- Groq integration ready
+- MiMo-style deployment positioning ready
 - demo fallback mode
 - easy local run
 - easy deploy path
@@ -78,9 +80,9 @@ public/app.js
   ↓
 POST /api/chat
   ↓
-server.js
+server.js / api/chat.js
   ↓
-OpenRouter API (optional)
+Groq API (optional)
   ↓
 Response back to UI
 ```
@@ -93,7 +95,7 @@ Response back to UI
 - Express
 - Vanilla HTML/CSS/JS
 - Axios
-- OpenRouter API (optional)
+- Groq API (optional)
 
 Why this stack:
 - fast to understand
@@ -165,17 +167,17 @@ Example response:
 ```
 
 ### Real AI mode
-If you add `OPENROUTER_API_KEY`, backend sends prompt to OpenRouter.
+If you add `GROQ_API_KEY`, backend sends prompt to Groq.
 
 ---
 
-## OpenRouter setup
+## Groq setup
 
-OpenRouter gives access to multiple AI models, including some free options.
+Groq gives fast AI responses and works well for free live demos.
 
 ### 1. Create API key
 Get key here:
-- https://openrouter.ai/keys
+- https://console.groq.com/keys
 
 ### 2. Create env file
 ```bash
@@ -184,21 +186,41 @@ cp .env.example .env
 
 ### 3. Edit `.env`
 ```env
-OPENROUTER_API_KEY=your_openrouter_api_key_here
+GROQ_API_KEY=your_groq_api_key_here
 PORT=3000
 ```
 
 ### 4. Run app with env
 If shell supports inline env loading:
 ```bash
-export OPENROUTER_API_KEY=your_openrouter_api_key_here
+export GROQ_API_KEY=your_groq_api_key_here
 npm start
 ```
 
 Or if using `.env`, load it with your preferred env loader.
 
-> Note: current server reads `process.env.OPENROUTER_API_KEY` directly.
+> Note: current server reads `process.env.GROQ_API_KEY` directly.
 > If you want automatic `.env` loading, add `dotenv` package.
+
+---
+
+## Xiaomi / MiMo relevance
+
+This repo is **not official Xiaomi MiMo API integration**.
+
+It stays relevant for Xiaomi / MiMo style evaluation because it shows:
+- mobile-first AI companion UX
+- lightweight assistant flow
+- live deployed AI interaction
+- clean consumer-facing interface
+- fast prototype-to-demo execution
+
+Best framing for submission:
+- **MiMo-style AI companion prototype**
+- **mobile AI assistant product demo**
+- **consumer AI interaction showcase**
+
+If Xiaomi later opens official MiMo API access, provider layer can be swapped inside `api/chat.js` without rebuilding frontend UX from zero.
 
 ---
 
@@ -228,7 +250,7 @@ POST /api/chat
 ```json
 {
   "reply": "Quantum computing uses quantum bits...",
-  "model": "meta-llama/llama-3.1-8b-instruct:free"
+  "model": "llama-3.3-70b-versatile"
 }
 ```
 
@@ -306,12 +328,12 @@ Good replacements:
 - Turn into tweet thread
 
 ## 4. Change model
-Edit `server.js`:
+Edit `server.js` and `api/chat.js`:
 ```js
-const DEFAULT_MODEL = 'meta-llama/llama-3.1-8b-instruct:free';
+const DEFAULT_MODEL = 'llama-3.3-70b-versatile';
 ```
 
-Swap with another OpenRouter model if needed.
+Swap with another Groq-supported model if needed.
 
 ---
 
@@ -422,8 +444,8 @@ Make sure your code is on GitHub.
 In the Vercel import screen:
 1. Scroll to **Environment Variables**
 2. Add:
-   - **Name:** `OPENROUTER_API_KEY`
-   - **Value:** your OpenRouter API key
+   - **Name:** `GROQ_API_KEY`
+   - **Value:** your Groq API key
 3. Apply to: **Production** (default)
 
 #### Step 4: Deploy
@@ -445,7 +467,7 @@ Open your Vercel URL and try chatting.
 3. Connect your GitHub repo
 4. Set environment variable:
    ```env
-   OPENROUTER_API_KEY=your_key_here
+   GROQ_API_KEY=your_key_here
    ```
 5. Deploy
 
@@ -467,7 +489,7 @@ Open your Vercel URL and try chatting.
    ```
 5. Add environment variable:
    ```env
-   OPENROUTER_API_KEY=your_key_here
+   GROQ_API_KEY=your_key_here
    ```
 
 **Note:** Render also requires credit card for verification.
@@ -482,7 +504,7 @@ If you have your own server:
 git clone https://github.com/Anzcrypto/poe-ai-wrapper.git
 cd poe-ai-wrapper
 npm install
-export OPENROUTER_API_KEY=your_key_here
+export GROQ_API_KEY=your_key_here
 npm start
 ```
 
@@ -534,9 +556,9 @@ npm start
 
 ## App starts but replies only echo
 Cause:
-- no `OPENROUTER_API_KEY`
+- no `GROQ_API_KEY`
 - invalid API key
-- OpenRouter request failed
+- Groq request failed
 
 Fix:
 - check env var exists
@@ -554,12 +576,12 @@ Or choose another port:
 PORT=8080 npm start
 ```
 
-## OpenRouter errors
+## Groq errors
 Check:
 - key valid
 - model valid
 - internet access available
-- headers sent properly
+- request body valid
 
 ## Frontend not updating
 Check browser console and terminal logs.
