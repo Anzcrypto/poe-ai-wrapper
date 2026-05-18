@@ -3,6 +3,9 @@ const axios = require('axios');
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 const DEFAULT_MODEL = 'meta-llama/llama-3.1-8b-instruct:free';
 
+console.log('[DEBUG] OPENROUTER_API_KEY exists:', !!OPENROUTER_API_KEY);
+console.log('[DEBUG] OPENROUTER_API_KEY length:', OPENROUTER_API_KEY?.length || 0);
+
 module.exports = async (req, res) => {
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
