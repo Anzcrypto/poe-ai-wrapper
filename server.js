@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Default free model from OpenRouter
-const DEFAULT_MODEL = 'qwen/qwen3-32b:free';
+const DEFAULT_MODEL = 'openrouter/auto';
 
 app.post('/api/chat', async (req, res) => {
   const { message } = req.body;
