@@ -4,13 +4,13 @@ const axios = require('axios');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Default free model from OpenRouter
-const DEFAULT_MODEL = 'openrouter/auto';
+// Groq free model
+const DEFAULT_MODEL = 'llama-3.3-70b-versatile';
 
 app.post('/api/chat', async (req, res) => {
   const { message } = req.body;
@@ -20,7 +20,7 @@ app.post('/api/chat', async (req, res) => {
   }
 
   // If no API key, use echo mode
-  if (!OPENROUTER_API_KEY) {
+  if (!GROQ_API_KEY) {
     return res.json({
       reply: `Echo (demo mode): ${message}`,
       model: 'demo-mode'
@@ -29,7 +29,7 @@ app.post('/api/chat', async (req, res) => {
 
   try {
     const response = await axios.post(
-      'https://openrouter.ai/api/v1/chat/completions',
+      'https://api.groq.com/openai/v1/chat/completions',
       {
         model: DEFAULT_MODEL,
         messages: [
@@ -43,10 +43,8 @@ app.post('/api/chat', async (req, res) => {
       },
       {
         headers: {
-          'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-          'Content-Type': 'application/json',
-          'HTTP-Referer': 'http://localhost:3000',
-          'X-Title': 'PocketAI Companion'
+          'Authorization': `Bearer ${GROQ_API_KEY}`,
+          'Content-Type': 'application/json'
         },
         timeout: 30000
       }
@@ -60,7 +58,7 @@ app.post('/api/chat', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('OpenRouter API Error:', error.response?.data || error.message);
+    console.error('Groq API Error:', error.response?.data || error.message);
 
     // Fallback to echo mode on error
     return res.json({
@@ -71,10 +69,10 @@ app.post('/api/chat', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  const mode = OPENROUTER_API_KEY ? 'OpenRouter' : 'Demo (echo)';
+  const mode = GROQ_API_KEY ? 'Groq AI' : 'Demo (echo)';
   console.log(`🚀 PocketAI Companion running on http://localhost:${PORT}`);
   console.log(`📡 Mode: ${mode}`);
-  if (!OPENROUTER_API_KEY) {
-    console.log('💡 Tip: Set OPENROUTER_API_KEY env var to enable real AI responses');
+  if (!GROQ_API_KEY) {
+    console.log('💡 Tip: Set GROQ_API_KEY env var to enable real AI responses');
   }
 });

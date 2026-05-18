@@ -1,10 +1,10 @@
 const axios = require('axios');
 
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-const DEFAULT_MODEL = 'openrouter/auto';
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
+const DEFAULT_MODEL = 'llama-3.3-70b-versatile';
 
-console.log('[DEBUG] OPENROUTER_API_KEY exists:', !!OPENROUTER_API_KEY);
-console.log('[DEBUG] OPENROUTER_API_KEY length:', OPENROUTER_API_KEY?.length || 0);
+console.log('[DEBUG] GROQ_API_KEY exists:', !!GROQ_API_KEY);
+console.log('[DEBUG] GROQ_API_KEY length:', GROQ_API_KEY?.length || 0);
 
 module.exports = async (req, res) => {
   // CORS headers
@@ -27,7 +27,7 @@ module.exports = async (req, res) => {
   }
 
   // If no API key, use echo mode
-  if (!OPENROUTER_API_KEY) {
+  if (!GROQ_API_KEY) {
     return res.json({
       reply: `Echo (demo mode): ${message}`,
       model: 'demo-mode'
@@ -36,7 +36,7 @@ module.exports = async (req, res) => {
 
   try {
     const response = await axios.post(
-      'https://openrouter.ai/api/v1/chat/completions',
+      'https://api.groq.com/openai/v1/chat/completions',
       {
         model: DEFAULT_MODEL,
         messages: [
@@ -50,10 +50,8 @@ module.exports = async (req, res) => {
       },
       {
         headers: {
-          'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-          'Content-Type': 'application/json',
-          'HTTP-Referer': 'https://demo-ai0.vercel.app',
-          'X-Title': 'PocketAI Companion'
+          'Authorization': `Bearer ${GROQ_API_KEY}`,
+          'Content-Type': 'application/json'
         },
         timeout: 30000
       }
@@ -67,7 +65,7 @@ module.exports = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('OpenRouter API Error:', error.response?.data || error.message);
+    console.error('Groq API Error:', error.response?.data || error.message);
 
     // Fallback to echo mode on error
     return res.json({
