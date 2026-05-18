@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-const DEFAULT_MODEL = 'meta-llama/llama-3.1-8b-instruct:free';
+const DEFAULT_MODEL = 'qwen/qwen3-32b:free';
 
 console.log('[DEBUG] OPENROUTER_API_KEY exists:', !!OPENROUTER_API_KEY);
 console.log('[DEBUG] OPENROUTER_API_KEY length:', OPENROUTER_API_KEY?.length || 0);
